@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from .models import NetworkUnit, Product
 
 
@@ -10,11 +11,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class NetworkUnitSerializer(serializers.ModelSerializer):
     level = serializers.IntegerField(read_only=True)
-    products = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Product.objects.all(),
-        required=False
-    )
+    products = serializers.PrimaryKeyRelatedField(many=True, queryset=Product.objects.all(), required=False)
 
     class Meta:
         model = NetworkUnit

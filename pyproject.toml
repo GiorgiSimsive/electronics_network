@@ -10,13 +10,48 @@ python = "^3.12"
 django = "==5.*"
 djangorestframework = "^3.16.1"
 django-filter = "^25.1"
+psycopg2-binary = "^2.9.10"
+python-dotenv = "^1.1.1"
 
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.2"
 pytest-django = "^4.11.1"
 pytest-cov = "^7.0.0"
+mypy = "^1.18.2"
+django-stubs = "^5.2.5"
+django-stubs-ext = "^5.2.5"
+djangorestframework-stubs = "^3.16.4"
+types-django-filter = "^25.1.0.20250923"
+
+
+[tool.poetry.group.lint.dependencies]
+flake8 = "^7.3.0"
+mypy = "^1.18.2"
+black = "^25.9.0"
+isort = "^6.0.1"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 119
+exclude = '''
+(
+  /(
+      \.eggs         # Исключить несколько общих каталогов
+    | \.git          # в корне проекта
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | dist
+  )/
+  | foo.py           # Также отдельно исключить файл с именем foo.py
+                     # в корне проекта
+)
+'''
+
+[tool.isort]
+line_length = 119

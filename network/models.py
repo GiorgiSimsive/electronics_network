@@ -1,9 +1,10 @@
-from django.db import models
 from django.core.exceptions import ValidationError
+from django.db import models
 
 
 class Product(models.Model):
     """Продукт: название, модель, дата выхода на рынок."""
+
     name = models.CharField(max_length=200)
     model = models.CharField(max_length=200)
     release_date = models.DateField()
@@ -21,6 +22,7 @@ class NetworkUnit(models.Model):
       - уровень 2: supplier -> уровень 1
     Глубина > 2 запрещена. Циклы запрещены.
     """
+
     name = models.CharField(max_length=255)
     email = models.EmailField()
     country = models.CharField(max_length=100)
@@ -29,26 +31,18 @@ class NetworkUnit(models.Model):
     house_number = models.CharField(max_length=20)
 
     supplier = models.ForeignKey(
-        'self',
+        "self",
         on_delete=models.PROTECT,
         null=True,
         blank=True,
-        related_name='clients',
-        help_text="Поставщик (предыдущий по иерархии объект сети). Для уровня 0 оставьте пустым."
+        related_name="clients",
+        help_text="Поставщик (предыдущий по иерархии объект сети). Для уровня 0 оставьте пустым.",
     )
     products = models.ManyToManyField(
-        Product,
-        blank=True,
-        related_name='suppliers',
-        help_text="Продукты, продающиеся через данное звено."
+        Product, blank=True, related_name="suppliers", help_text="Продукты, продающиеся через данное звено."
     )
 
-    debt = models.DecimalField(
-        "Задолженность перед поставщиком",
-        max_digits=12,
-        decimal_places=2,
-        default=0
-    )
+    debt = models.DecimalField("Задолженность перед поставщиком", max_digits=12, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

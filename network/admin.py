@@ -1,8 +1,8 @@
 from django.contrib import admin
-from django.utils.html import format_html
 from django.urls import reverse
+from django.utils.html import format_html
 
-from .models import Product, NetworkUnit
+from .models import NetworkUnit, Product
 
 
 @admin.register(Product)
@@ -30,14 +30,11 @@ class NetworkUnitAdmin(admin.ModelAdmin):
     list_filter = ("city", "country")
     search_fields = ("name", "country", "city", "email", "street", "house_number", "supplier__name")
     actions = [clear_debt]
-
     readonly_fields = ("created_at", "supplier_link", "level_display")
     raw_id_fields = ("supplier",)
     filter_horizontal = ("products",)
-
     ordering = ("country", "city", "name")
     list_select_related = ("supplier",)
-
     fields = (
         "name",
         "email",
@@ -51,14 +48,13 @@ class NetworkUnitAdmin(admin.ModelAdmin):
         "created_at",
     )
 
-    def level_display(self, obj):
+    @admin.display(description="Уровень")
+    def level_display(self, obj: NetworkUnit) -> int:
         return obj.level
-    level_display.short_description = "Уровень"
 
-    def supplier_link(self, obj):
-        """Кликабельная ссылка на карточку поставщика в админке."""
+    @admin.display(description="Поставщик")
+    def supplier_link(self, obj: NetworkUnit) -> str:
         if not obj.supplier:
             return "—"
         url = reverse("admin:network_networkunit_change", args=[obj.supplier.pk])
         return format_html('<a href="{}">{}</a>', url, obj.supplier.name)
-    supplier_link.short_description = "Поставщик"

@@ -8,37 +8,59 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Product',
+            name="Product",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200)),
-                ('model', models.CharField(max_length=200)),
-                ('release_date', models.DateField()),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(max_length=200)),
+                ("model", models.CharField(max_length=200)),
+                ("release_date", models.DateField()),
             ],
         ),
         migrations.CreateModel(
-            name='NetworkUnit',
+            name="NetworkUnit",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('email', models.EmailField(max_length=254)),
-                ('country', models.CharField(max_length=100)),
-                ('city', models.CharField(max_length=100)),
-                ('street', models.CharField(max_length=100)),
-                ('house_number', models.CharField(max_length=20)),
-                ('debt', models.DecimalField(decimal_places=2, default=0, max_digits=12, verbose_name='Задолженность перед поставщиком')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('supplier', models.ForeignKey(blank=True, help_text='Поставщик (предыдущий по иерархии объект сети). Для уровня 0 оставьте пустым.', null=True, on_delete=django.db.models.deletion.PROTECT, related_name='clients', to='network.networkunit')),
-                ('products', models.ManyToManyField(blank=True, help_text='Продукты, продающиеся через данное звено.', related_name='suppliers', to='network.product')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(max_length=255)),
+                ("email", models.EmailField(max_length=254)),
+                ("country", models.CharField(max_length=100)),
+                ("city", models.CharField(max_length=100)),
+                ("street", models.CharField(max_length=100)),
+                ("house_number", models.CharField(max_length=20)),
+                (
+                    "debt",
+                    models.DecimalField(
+                        decimal_places=2, default=0, max_digits=12, verbose_name="Задолженность перед поставщиком"
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "supplier",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Поставщик (предыдущий по иерархии объект сети). Для уровня 0 оставьте пустым.",
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="clients",
+                        to="network.networkunit",
+                    ),
+                ),
+                (
+                    "products",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="Продукты, продающиеся через данное звено.",
+                        related_name="suppliers",
+                        to="network.product",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Звено сети',
-                'verbose_name_plural': 'Звенья сети',
+                "verbose_name": "Звено сети",
+                "verbose_name_plural": "Звенья сети",
             },
         ),
     ]
