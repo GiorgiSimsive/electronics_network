@@ -27,13 +27,16 @@ class NetworkUnitAdmin(admin.ModelAdmin):
         "debt",
         "created_at",
     )
-    list_filter = ("city",)
+    list_filter = ("city", "country")
     search_fields = ("name", "country", "city", "email", "street", "house_number", "supplier__name")
     actions = [clear_debt]
 
     readonly_fields = ("created_at", "supplier_link", "level_display")
     raw_id_fields = ("supplier",)
     filter_horizontal = ("products",)
+
+    ordering = ("country", "city", "name")
+    list_select_related = ("supplier",)
 
     fields = (
         "name",
